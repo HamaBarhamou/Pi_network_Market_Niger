@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    {% load static %}
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/style.css' %}">
+    <title>{% block title %}Ma boutique{% endblock %}</title>
+</head>
+
+<body>
+    
+    <div id="sidebar">
+        {% block sidebar %}
+        <ul>
+            <li><a href="{% url 'index' %}">shop</a></li>
+            <li><a href="{% url 'ContacteNous' %}">Nous contacter</a></li>
+        </ul>
+        {% endblock %}
+    </div>
+
+    <div id="contenue">
+        {% block contenue %}{% endblock %}
+    </div>
+    <div id="foot">
+        {% block foot %}pied{% endblock %}
+    </div>
+</body>
+</html>

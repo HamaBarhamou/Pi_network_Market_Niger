@@ -1,0 +1,19 @@
+{% extends "shop/base.html" %}
+
+{% block contenue %}
+    <h2>Article</h2>
+   
+    {% for article in page_obj %}
+        {% if article.image %}
+            {% load static %}
+            <img src= "{{ article.image.url }}" >
+            <a href="article/{{ article.pk }}">{{ article.nom }}</a>
+            {{ article.categories }}
+        
+        {% endif %}
+    
+    {% endfor %}
+
+    {% include "shop/pagination.html" %}
+
+{% endblock %}
