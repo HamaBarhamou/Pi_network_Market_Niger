@@ -4,62 +4,26 @@
 <head>
     {% load static %}
     
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link rel="stylesheet" type="text/css" href="{% static 'shop/style.css' %}">
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>{% block title %}Ma boutique{% endblock %}</title>
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-          <div class="col">
-            1 of 3
-          </div>
-          <div class="col-6">
-            2 of 3 (wider)
-          </div>
-          <div class="col">
-            3 of 3
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            1 of 3
-          </div>
-          <div class="col-5">
-            2 of 3 (wider)
-          </div>
-          <div class="col">
-            3 of 3
-          </div>
-        </div>
-      </div>
     
-        <div id="sidebar">
-            {% block sidebar %}
-            <ul>
-                <li><a href="{% url 'index' %}">shop</a></li>
-                <li><a href="{% url 'ContacteNous' %}">Nous contacter</a></li>
-            </ul>
-            {% endblock %}
-        </div>
+    <div id="sidebar">
+        {% block sidebar %}
+        <ul>
+            <li><a href="{% url 'index' %}">shop</a></li>
+            <li><a href="{% url 'ContacteNous' %}">Nous contacter</a></li>
+        </ul>
+        {% endblock %}
+    </div>
 
-        <div id="contenue">
-            {% block contenue %}{% endblock %}
-        </div>
-        <div id="foot">
-            {% block foot %}pied{% endblock %}
-        </div>
-   
-
-    <!-- Optional JavaScript; choose one of the two! -->
-
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <div id="contenue">
+        {% block contenue %}{% endblock %}
+    </div>
+    <div id="foot">
+        {% block foot %}pied{% endblock %}
+    </div>
 </body>
 </html>
