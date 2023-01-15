@@ -1,0 +1,20 @@
+
+<div class="dropdown">
+    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+        {% if user.avatar == "" %}
+            {% load static %}
+            <img src="{% static 'images/avatar.jpg' %}" alt="Avatar" style="width:30px;height:30px;">
+        {% else %}
+            {% load static %}
+            <img src="/static/images/{{ user.avatar }}" style="width:30px;height:30px;">
+        {% endif %}
+        </br>
+        {{ user.username }}
+    </a>
+  
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <li><a class="dropdown-item" href="#">Votre Profile</a></li>
+      <li><a class="dropdown-item" href="#">Paramettre</a></li>
+      <li><a class="dropdown-item" href="/user/logout">Se deconnecté</a></li>
+    </ul>
+</div>
