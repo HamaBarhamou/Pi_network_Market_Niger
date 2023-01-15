@@ -1,1 +1,1 @@
-# myshop
+Project to create an online market in Niger and beyond the Nigerien border, where the exchange of goods and services will integrate the pi-network as a means of payment in addition to traditional means
