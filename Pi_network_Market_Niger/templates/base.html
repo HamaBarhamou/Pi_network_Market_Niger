@@ -1,0 +1,65 @@
+{% comment %} {% load staticfiles %} {% endcomment %}
+<!DOCTYPE html>
+<HTML lang="fr">
+    <HEAD>
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js" integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        {% block headfile %}
+            
+        {% endblock %}
+        {% block head %}
+            <title>{% block title %} {% endblock %}</title>
+        {% endblock %}
+    </HEAD>
+    <BODY>
+
+        <div class="container-fluid m-2 h-25" >
+            <div class="row">
+                <div class="col-sm border border-secondary">
+                    {% load static %}
+                    <img src="{% static 'images/logo.png' %}" alt="BACOREX-SARL" style="width:50px;height:50px;">
+                </div>
+                <div class="col-sm col-10 border border-success">
+                    {% block entete %} 
+                       
+                    {% endblock %}
+                </div>
+                <div class="col-sm border border-warning">
+                    {% block profile %} 
+                       
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        {% block entete_messagerie %} 
+                    
+        {% endblock %}
+        <div class="row container-fluid border border-dark ">
+            <div class="col-sm col-2 border border-success ">
+                {% block menu %} 
+                    
+                {% endblock %}
+            </div>
+
+            <div class="col-sm col-10 border border-dark overflow-scroll">
+                {% block content %} {% endblock %}
+            </div> 
+            
+        </div>
+
+        <div id="footer" class="container-fluid border border-dark m-2">
+            {% block footer %}
+                {% include "footer.html" %}
+            {% endblock %}
+        </div>
+        
+
+        <!-- Bootstrap JS bundle -->
+        {% block codejs %}
+        
+        {% endblock %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </BODY>
+</HTML>
