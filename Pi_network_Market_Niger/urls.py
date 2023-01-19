@@ -22,4 +22,5 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('shop/', include('shop.urls')),
     path('', views.home, name='home'),
+    path('search/', views.search, name='search'),
 ]

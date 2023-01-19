@@ -6,3 +6,6 @@ def home(request):
     context = {'form': 'form'}
     template = loader.get_template('home.html')
     return HttpResponse(template.render(context, request))
+
+def search(request):
+    return HttpResponse('champ de recherche')
