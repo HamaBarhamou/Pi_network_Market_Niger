@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div class="container-fluid m-2 h-25" >
+        <div class="row">
+            <div class="col-sm border border-secondary">
+                {% load static %}
+                <img src="{% static 'images/logo.png' %}" alt="BACOREX-SARL" style="width:50px;height:50px;">
+            </div>
+            <div class="col-sm col-10 border border-success">
+                {% block entete %} 
+                
+                {% endblock %}
+            </div>
+            <div class="col-sm border border-warning">
+                {% block profile %} 
+                
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row container-fluid border border-dark ">
+        <div class="col-sm col-12 border border-dark">
+            {% block content %} {% endblock %}
+        </div> 
+    </div>
+
+{% endblock %}
