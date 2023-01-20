@@ -13,7 +13,8 @@ class User(AbstractUser):
 
     fonction = models.PositiveSmallIntegerField(
                   choices=USER_TYPE_CHOICES,
-                  null=True
+                  null=True,
+                  default=3
                   )
     avatar = models.ImageField(
                 verbose_name='photo de profile',
