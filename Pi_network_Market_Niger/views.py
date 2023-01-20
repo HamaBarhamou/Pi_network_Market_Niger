@@ -7,15 +7,17 @@ from .forms import searchForm
 
 @csrf_exempt
 def search(request, search=None):
+    list_article = ''
     if request.method == "POST":
         form = searchForm(request.POST)
         if form.is_valid():
-            context = {'form': 'search'}
+            list_article = form.cleaned_data["search"]
         else:
             form = searchForm(request.POST)
-            context = {'form': ''}   
+            context = {'form': form}   
     else:
-        context = {'form': ''}
+        form = searchForm()
+    context = {'list_article': list_article, 'form': form}
     template = loader.get_template('search.html')
     return HttpResponse(template.render(context, request))
 
