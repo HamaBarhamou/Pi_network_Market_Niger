@@ -18,7 +18,7 @@ class User(AbstractUser):
                   )
     avatar = models.ImageField(
                 verbose_name='photo de profile',
-                upload_to='media/avatars'
+                upload_to='avatar'
                 )
 
     def __str__(self):
