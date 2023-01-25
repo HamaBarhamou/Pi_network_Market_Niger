@@ -11,6 +11,7 @@ from Pi_network_Market_Niger.utils import authors_vendor
 
 
 @login_required(login_url='/user/')
+@authors_vendor
 def newshop(request):
     if request.method == "POST":
         form = ShopForm(request.POST)

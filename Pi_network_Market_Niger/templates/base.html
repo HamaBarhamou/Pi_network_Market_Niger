@@ -22,7 +22,7 @@
                 <a href="#" class="link-primary">Articles</a> 
                 {% if request.user.is_authenticated %}
                     {% if request.user.fonction == 2 %}
-                        <a href="#" class="link-primary">Dashbord</a>
+                        <a href="{% url 'dashbord' %}" class="link-primary">Dashbord</a>
                     {% endif %}
                     <a href="{% url 'logout' %}" class="link-primary">sign out</a> 
                 {% else %}
