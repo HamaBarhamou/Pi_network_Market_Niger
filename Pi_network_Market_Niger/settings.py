@@ -76,6 +76,7 @@ TEMPLATES = [
 STATICFILES_DIRS = [
     BASE_DIR / "Pi_network_Market_Niger/static",
     BASE_DIR / "user/static",
+    BASE_DIR / "shop/static",
 ]
 
 WSGI_APPLICATION = 'Pi_network_Market_Niger.wsgi.application'
