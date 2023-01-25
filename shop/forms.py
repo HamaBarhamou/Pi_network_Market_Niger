@@ -8,7 +8,7 @@ from user.models import User
 class ShopForm(ModelForm):
     class Meta:
         model = Shop
-        fields = '__all__'
+        exclude = ('user', 'market')
 
 
 class CategoryForm(ModelForm):

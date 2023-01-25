@@ -8,13 +8,18 @@ from django.contrib.auth.decorators import login_required
 from .forms import ShopForm
 from django.views.decorators.http import require_http_methods
 from Pi_network_Market_Niger.utils import authors_vendor
+from .models import Shop, Market
 
 
 @login_required(login_url='/user/')
 @authors_vendor
 def newshop(request):
     if request.method == "POST":
-        form = ShopForm(request.POST)
+        shop = Shop(
+                user=request.user,
+                market=Market.objects.first()
+                )
+        form = ShopForm(request.POST, instance=shop)
         if form.is_valid():
             form.save()
             form = ShopForm()
