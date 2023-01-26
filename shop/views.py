@@ -37,3 +37,10 @@ def dashbord(request):
     context = {'form': ''}
     template = loader.get_template('dashboard.html')
     return HttpResponse(template.render(context, request))
+
+@login_required(login_url='/user/')
+@authors_vendor
+def mesboutique(request):
+    context = {'shopAll': Shop.objects.filter(user=request.user)}
+    template = loader.get_template('mesboutique.html')
+    return HttpResponse(template.render(context, request))
