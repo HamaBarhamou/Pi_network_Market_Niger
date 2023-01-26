@@ -19,7 +19,7 @@ def newshop(request):
                 user=request.user,
                 market=Market.objects.first()
                 )
-        form = ShopForm(request.POST, instance=shop)
+        form = ShopForm(request.POST, request.FILES, instance=shop)
         if form.is_valid():
             form.save()
             form = ShopForm()

@@ -8,7 +8,7 @@
 {% bootstrap_messages %}
 
 {% block content %}
-    <form action="{% url 'newshop' %}" method="post">
+    <form enctype="multipart/form-data" action="{% url 'newshop' %}" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
