@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import ShopForm
 from django.views.decorators.http import require_http_methods
 from Pi_network_Market_Niger.utils import authors_vendor
+from django.core.paginator import Paginator
 from .models import Shop, Market
 
 
@@ -41,6 +42,10 @@ def dashbord(request):
 @login_required(login_url='/user/')
 @authors_vendor
 def mesboutique(request):
-    context = {'shopAll': Shop.objects.filter(user=request.user)}
+    shop = Shop.objects.filter(user=request.user)
+    paginator = Paginator(shop, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'page_obj': page_obj}
     template = loader.get_template('mesboutique.html')
     return HttpResponse(template.render(context, request))
