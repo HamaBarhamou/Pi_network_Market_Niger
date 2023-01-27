@@ -6,6 +6,7 @@ from .forms import LoginForm
 from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import redirect
+from shop.models import Shop, Market
 
 
 # Create your views here.
@@ -53,11 +54,18 @@ def register(request):
             fonction = form.cleaned_data['fonction']
             obj.fonction = int(fonction)
             obj.save()
-            #print('fonction= ',obj.fonction)
             user = authenticate(username=username, password=password)
-            login(request,user)	
-            messages.success(request, f'Coucou {username}, Votre compte a été créé avec succès !')				
-            return redirect('login')
+            login(request,user)
+            if request.user.fonction == 2:
+                shop = Shop(
+                        name=f'{obj.username} Shop',
+                        description=f'La boutique de {obj.username}',
+                        market=Market.objects.first(),
+                        user=request.user
+                        )
+                shop.save()
+            messages.success(request, f'Coucou {username}, Votre compte et votre boutique on été créé avec succès !')				
+            return redirect('/')
     else:
         form = UserRegistrationForm()
     context = {'form': form}

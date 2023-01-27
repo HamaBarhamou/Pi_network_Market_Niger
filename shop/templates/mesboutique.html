@@ -21,6 +21,9 @@
                     <td>{{p.description}}</td>
                     <td>
                         <a href="#" class="list-group-item list-group-item-action">
+                            {% comment %} {% if user.avatar != "" %}
+                                <img src="{{ p.image.url }}"/>
+                            {% endif %} {% endcomment %}
                             <img src="{{ p.image.url }}"/>
                         </a>
                     </td>

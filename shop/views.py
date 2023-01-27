@@ -14,8 +14,8 @@ from .models import Shop, Market
 
 @login_required(login_url='/user/')
 @authors_vendor
-def newshop(request):
-    if request.method == "POST":
+def updateshop(request):
+    """ if request.method == "POST":
         shop = Shop(
                 user=request.user,
                 market=Market.objects.first()
@@ -28,6 +28,22 @@ def newshop(request):
             form = ShopForm(request.POST)
     else:
         form = ShopForm()
+    context = {'form': form}
+    template = loader.get_template('newshop.html')
+    return HttpResponse(template.render(context, request)) """
+    
+    shop = Shop.objects.filter(user=request.user).first()
+    if request.method == "POST":
+        form = ShopForm(request.POST, request.FILES, instance=shop)
+        if form.is_valid():
+            shop = form.save()
+            print('souavagag')
+            return redirect('dashbord')
+        else:
+            print('formulaire invalid')
+            form = ShopForm(instance=shop)  
+    else:
+        form = ShopForm(instance=shop)
     context = {'form': form}
     template = loader.get_template('newshop.html')
     return HttpResponse(template.render(context, request))

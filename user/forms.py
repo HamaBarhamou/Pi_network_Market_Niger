@@ -27,7 +27,6 @@ class UserRegistrationForm(UserCreationForm):
     first_name = forms.CharField(label='Prénom')
     last_name = forms.CharField(label='Nom')
     email = forms.EmailField(label='Adresse e-mail')
-    #fonction = forms.IntegerField()
     fonction = forms.ChoiceField(choices=STATUS_CHOICES)
 
     class Meta(UserCreationForm.Meta):

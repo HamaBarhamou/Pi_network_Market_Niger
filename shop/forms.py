@@ -9,6 +9,7 @@ class ShopForm(ModelForm):
     class Meta:
         model = Shop
         exclude = ('user', 'market')
+        #ields = '__all__'
 
 
 class CategoryForm(ModelForm):
