@@ -47,13 +47,17 @@ def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()		
+            obj = form.save(commit=False)		
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
+            fonction = form.cleaned_data['fonction']
+            obj.fonction = int(fonction)
+            obj.save()
+            #print('fonction= ',obj.fonction)
             user = authenticate(username=username, password=password)
             login(request,user)	
-            messages.success(request, f'Coucou {username}, Votre compte a été créé avec succès !')					
-            return redirect('search')
+            messages.success(request, f'Coucou {username}, Votre compte a été créé avec succès !')				
+            return redirect('login')
     else:
         form = UserRegistrationForm()
     context = {'form': form}

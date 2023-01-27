@@ -12,39 +12,30 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-    <p> Vous êtes connecté, {{ user.username }} ! <a href="{% url 'logout' %}">Se déconnecter</a></p>
+    <p> Vous êtes connecté, {{ user.username }} ! Aller a  <a href="{% url 'search' %}">Home</a></p>
 
 {% else %}
 <form method="post" action=".">
-       {% comment %} {% csrf_token %}
-       {{ form.as_p }} {% endcomment %}
-       {% if form %}
-            {% if form.errors %}
-                <ul class="errors">
-                    {% for error in form.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-
-            <!-- Display Form -->
-            {% csrf_token %}
-            <div class="form-outline mb-4">
-                <label class="form-label" for="form2Example1">User name</label>
-                {{ form.username}}
-            </div>
-            <div class="form-outline mb-4">
-                <label class="form-label" for="form2Example1">Password</label>
-                {{ form.password}}           
-            </div>
+    {% if form %}
+        {% if form.errors %}
+            <ul class="errors">
+                {% for error in form.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
         {% endif %}
 
-        <button type="submit"> Se connecter</button>
-        {% comment %} {% bootstrap_form form %}
-        {% buttons %}
-            <button type="submit" class="btn btn-primary">
-                Enregister
-            </button>
-        {% endbuttons %} {% endcomment %}
+        {% csrf_token %}
+        <div class="form-outline mb-4">
+            <label class="form-label" for="form2Example1">User name</label>
+            {{ form.username}}
+        </div>
+        <div class="form-outline mb-4">
+            <label class="form-label" for="form2Example1">Password</label>
+            {{ form.password}}           
+        </div>
+    {% endif %}
+    <button type="submit"> Se connecter</button>
 </form>
+Vous n'avez pas de compte? <a href="{% url 'register' %}">S'inscrire</a>
 {% endif %}

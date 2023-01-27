@@ -20,9 +20,15 @@ class LoginForm(forms.Form):
                     )
 
 class UserRegistrationForm(UserCreationForm):
+    STATUS_CHOICES = [
+    ('3', 'Client'),
+    ('2', 'Commercant'),
+    ]
     first_name = forms.CharField(label='Prénom')
     last_name = forms.CharField(label='Nom')
     email = forms.EmailField(label='Adresse e-mail')
+    #fonction = forms.IntegerField()
+    fonction = forms.ChoiceField(choices=STATUS_CHOICES)
 
     class Meta(UserCreationForm.Meta):
         model = User
