@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.db import models
-from .models import Category, Shop, Article, Market
+from .models import Category, Shop, Article
 from user.models import User
 
 

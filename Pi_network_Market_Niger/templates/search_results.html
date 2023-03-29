@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if request.GET.q %}
+        <h1>Résultats de recherche pour "{{ request.GET.q }}"</h1>
+    {% endif %}
+    <form method="get">
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control" name="q" placeholder="Rechercher un article" value="{{ request.GET.q }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Rechercher</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    {% if not request.GET.q and popular_articles %}
+        <h2>Articles les plus consultés :</h2>
+        <ul class="list-group">
+            {% for article in popular_articles %}
+                <li class="list-group-item">{{ article.name }} - {{ article.price }} €</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if request.GET.q %}
+        {% if articles %}
+            <ul class="list-group">
+                {% for article in articles %}
+                    <li class="list-group-item">{{ article.name }} - {{ article.price }} €</li>
+                {% endfor %}
+            </ul>
+            {% if articles.has_other_pages %}
+                <div class="pagination justify-content-center mt-4">
+                    {% if articles.has_previous %}
+                        <a href="?q={{ request.GET.q }}&page={{ articles.previous_page_number }}" class="btn btn-primary">Précédent</a>
+                    {% endif %}
+                    <span class="mx-3 align-self-center">
+                        Page {{ articles.number }} sur {{ articles.paginator.num_pages }}.
+                    </span>
+                    {% if articles.has_next %}
+                        <a href="?q={{ request.GET.q }}&page={{ articles.next_page_number }}" class="btn btn-primary">Suivant</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% else %}
+            <p>Aucun article trouvé.</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

@@ -1,34 +1,23 @@
 from django import forms
-from django.forms import ModelForm, Textarea, NumberInput
 from django.contrib.auth.forms import UserCreationForm
-from .models import User
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
-class LoginForm(forms.Form):
-    username = forms.CharField(
-                    label="Nom d'utilisateur",
-                    max_length=30,
-                    widget=forms.TextInput(attrs={
-                                            'class': 'form-control'
-                                            })
-                    )
-    password = forms.CharField(
-                    label="Mot de passe",
-                    widget=forms.PasswordInput(attrs={
-                                                'class': 'form-control'
-                                                })
-                    )
+class UserRegisterForm(UserCreationForm):
+    email = forms.EmailField()
 
-class UserRegistrationForm(UserCreationForm):
-    STATUS_CHOICES = [
-    ('3', 'Client'),
-    ('2', 'Commercant'),
-    ]
-    first_name = forms.CharField(label='Prénom')
-    last_name = forms.CharField(label='Nom')
-    email = forms.EmailField(label='Adresse e-mail')
-    fonction = forms.ChoiceField(choices=STATUS_CHOICES)
-
-    class Meta(UserCreationForm.Meta):
+    class Meta:
         model = User
-        fields = UserCreationForm.Meta.fields + ('first_name', 'last_name' , 'email')
+        fields = ['username', 'email', 'password1', 'password2']
+
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(label='Nom d\'utilisateur', widget=forms.TextInput(attrs={'autofocus': True}))
+    password = forms.CharField(label='Mot de passe', widget=forms.PasswordInput)
+
+    error_messages = {
+        'invalid_login': 'Nom d\'utilisateur ou mot de passe incorrect',
+        'inactive': 'Ce compte est inactif',
+    }

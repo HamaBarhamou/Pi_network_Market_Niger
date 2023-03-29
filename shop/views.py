@@ -9,7 +9,7 @@ from .forms import ShopForm
 from django.views.decorators.http import require_http_methods
 from Pi_network_Market_Niger.utils import authors_vendor
 from django.core.paginator import Paginator
-from .models import Shop, Market
+from .models import Shop
 
 
 @login_required(login_url='/user/')
