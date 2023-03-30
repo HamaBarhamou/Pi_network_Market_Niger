@@ -24,5 +24,4 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('shop/', include('shop.urls')),
     path('', views.search, name='search'),
-    path('<str:search>/', views.search, name='search'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

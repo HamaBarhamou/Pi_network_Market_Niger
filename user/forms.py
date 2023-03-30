@@ -6,11 +6,26 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class UserRegisterForm(UserCreationForm):
-    email = forms.EmailField()
+    email = forms.EmailField(required=True)
+
+    USER_TYPE_CHOICES = (
+        (2, 'Vendor'),
+        (3, 'Customer'),
+    )
+
+    fonction = forms.ChoiceField(choices=USER_TYPE_CHOICES, required=True)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'password1', 'password2', 'fonction']
+
+    def save(self, commit=True):
+        user = super(UserRegisterForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        user.fonction = self.cleaned_data['fonction']
+        if commit:
+            user.save()
+        return user
 
 
 class LoginForm(AuthenticationForm):
