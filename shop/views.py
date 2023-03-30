@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Shop, Category, Article
 from .forms import ShopForm, CategoryForm, ArticleForm
+from user.models import User
 
 
 @login_required
@@ -149,3 +150,9 @@ def delete_article(request, article_id):
         return redirect('shop:vendor_dashboard')
     return render(request, 'vendor/delete_article.html', {'article': article})
 
+
+def vendeur_detail(request, pk):
+    vendeur = get_object_or_404(User, pk=pk)
+    articles = Article.objects.filter(vendeur=vendeur)
+    context = {'vendeur': vendeur, 'articles': articles}
+    return render(request, 'vendor/vendeur_detail.html', context)

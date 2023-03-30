@@ -1,4 +1,4 @@
-{% extends 'vendor/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
   <h2>Delete Article</h2>
@@ -8,6 +8,6 @@
     {% csrf_token %}
 
     <button type="submit" class="btn btn-danger">Yes, delete</button>
-    <a href="{% url 'vendor_dashboard' %}" class="btn btn-secondary">Cancel</a>
+    <a href="{% url 'shop:vendor_dashboard' %}" class="btn btn-secondary">Cancel</a>
   </form>
 {% endblock %}

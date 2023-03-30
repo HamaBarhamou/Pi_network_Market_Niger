@@ -19,6 +19,7 @@
         <ul class="list-group">
             {% for article in popular_articles %}
                 <li class="list-group-item">{{ article.name }} - {{ article.price }} €</li>
+
             {% endfor %}
         </ul>
     {% endif %}
@@ -26,7 +27,8 @@
         {% if articles %}
             <ul class="list-group">
                 {% for article in articles %}
-                    <li class="list-group-item">{{ article.name }} - {{ article.price }} €</li>
+                    {% comment %} <li class="list-group-item">{{ article.name }} - {{ article.price }} €</li> {% endcomment %}
+                    <li class="list-group-item">{{ article.name }} - {{ article.price }} € - Vendeur : <a href="{{ article.get_absolute_url }}">{{ article.vendeur }}</a></li>
                 {% endfor %}
             </ul>
             {% if articles.has_other_pages %}
