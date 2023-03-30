@@ -1,67 +1,151 @@
-from django.shortcuts import  HttpResponse
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
-from django.shortcuts import redirect
-from django.http import HttpResponse
-from django.template import loader
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import ShopForm
-from django.views.decorators.http import require_http_methods
-from Pi_network_Market_Niger.utils import authors_vendor
-from django.core.paginator import Paginator
-from .models import Shop
+from django.contrib import messages
+from .models import Shop, Category, Article
+from .forms import ShopForm, CategoryForm, ArticleForm
 
 
-@login_required(login_url='/user/')
-@authors_vendor
-def updateshop(request):
-    """ if request.method == "POST":
-        shop = Shop(
-                user=request.user,
-                market=Market.objects.first()
-                )
+@login_required
+def vendor_dashboard(request):
+    try:
+        shop = Shop.objects.get(user=request.user)
+    except Shop.DoesNotExist:
+        # Rediriger l'utilisateur vers la page de création de boutique
+        return redirect('shop:create_shop')
+
+    categories = Category.objects.filter(shop=shop)
+    articles = Article.objects.filter(category__shop=shop)
+    return render(request, 'vendor/dashboard.html', {'shop': shop, 'categories': categories, 'articles': articles})
+
+
+@login_required
+def vendor_articles(request):
+    shop = get_object_or_404(Shop, user=request.user)
+    articles = Article.objects.filter(category__shop=shop)
+    return render(request, 'vendor/articles.html', {'articles': articles})
+
+@login_required
+def vendor_categories(request):
+    shop = get_object_or_404(Shop, user=request.user)
+    categories = Category.objects.filter(shop=shop)
+    return render(request, 'vendor/categories.html', {'categories': categories})
+
+@login_required
+def create_shop(request):
+    if request.method == 'POST':
+        form = ShopForm(request.POST, request.FILES)
+        if form.is_valid():
+            shop = form.save(commit=False)
+            shop.user = request.user
+            shop.save()
+            messages.success(request, 'Shop created successfully.')
+            return redirect('shop:vendor_dashboard')
+    else:
+        form = ShopForm()
+    return render(request, 'vendor/create_shop.html', {'form': form})
+
+@login_required
+def update_shop(request, shop_id):
+    shop = get_object_or_404(Shop, pk=shop_id)
+    if request.method == 'POST':
         form = ShopForm(request.POST, request.FILES, instance=shop)
         if form.is_valid():
             form.save()
-            form = ShopForm()
-        else:
-            form = ShopForm(request.POST)
-    else:
-        form = ShopForm()
-    context = {'form': form}
-    template = loader.get_template('newshop.html')
-    return HttpResponse(template.render(context, request)) """
-    
-    shop = Shop.objects.filter(user=request.user).first()
-    if request.method == "POST":
-        form = ShopForm(request.POST, request.FILES, instance=shop)
-        if form.is_valid():
-            shop = form.save()
-            print('souavagag')
-            return redirect('dashbord')
-        else:
-            print('formulaire invalid')
-            form = ShopForm(instance=shop)  
+            messages.success(request, 'Shop updated successfully.')
+            return redirect('shop:vendor_dashboard')
     else:
         form = ShopForm(instance=shop)
-    context = {'form': form}
-    template = loader.get_template('newshop.html')
-    return HttpResponse(template.render(context, request))
+    return render(request, 'vendor/update_shop.html', {'form': form, 'shop': shop})
 
-@login_required(login_url='/user/')
-@authors_vendor
-def dashbord(request):
-    context = {'form': ''}
-    template = loader.get_template('dashboard.html')
-    return HttpResponse(template.render(context, request))
+@login_required
+def delete_shop(request, shop_id):
+    shop = get_object_or_404(Shop, pk=shop_id)
+    shop.delete()
+    messages.success(request, 'Shop deleted successfully.')
+    return redirect('shop:vendor_dashboard')
 
-@login_required(login_url='/user/')
-@authors_vendor
-def mesboutique(request):
-    shop = Shop.objects.filter(user=request.user)
-    paginator = Paginator(shop, 3)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {'page_obj': page_obj}
-    template = loader.get_template('mesboutique.html')
-    return HttpResponse(template.render(context, request))
+@login_required
+def create_category(request):
+    shop = get_object_or_404(Shop, user=request.user)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.shop = shop
+            category.save()
+            messages.success(request, 'Category created successfully.')
+            return redirect('shop:vendor_dashboard')
+    else:
+        form = CategoryForm()
+    return render(request, 'vendor/create_category.html', {'form': form})
+
+@login_required
+def update_category(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, request.FILES, instance=category)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Category updated successfully.')
+            return redirect('shop:vendor_dashboard')
+    else:
+        form = CategoryForm(instance=category)
+    return render(request, 'vendor/update_category.html', {'form': form, 'category': category})
+
+def category_detail(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    articles = Article.objects.filter(category=category)
+    context = {'category': category, 'articles': articles}
+    return render(request, 'category_detail.html', context)
+
+@login_required
+def delete_category(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    category.delete()
+    messages.success(request, 'Category deleted successfully.')
+    return redirect('shop:vendor_dashboard')
+
+@login_required
+def create_article(request):
+    shop = get_object_or_404(Shop, user=request.user)
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, request.FILES)
+        if form.is_valid():
+            article = form.save(commit=False)
+            article.category.shop = shop
+            article.save()
+            messages.success(request, 'Article created successfully.')
+            return redirect('shop:vendor_dashboard')
+    else:
+        form = ArticleForm()
+    return render(request, 'vendor/create_article.html', {'form': form})
+
+@login_required
+def update_article(request, article_id):
+    shop = get_object_or_404(Shop, user=request.user)
+    article = get_object_or_404(Article, pk=article_id, category__shop=shop)
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, request.FILES, instance=article)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Article updated successfully.')
+            return redirect('shop:vendor_dashboard')
+    else:
+        form = ArticleForm(instance=article)
+    return render(request, 'vendor/update_article.html', {'form': form})
+
+def article_detail(request, article_id):
+    article = get_object_or_404(Article, pk=article_id)
+    context = {'article': article}
+    return render(request, 'article_detail.html', context)
+
+@login_required
+def delete_article(request, article_id):
+    shop = get_object_or_404(Shop, user=request.user)
+    article = get_object_or_404(Article, pk=article_id, category__shop=shop)
+    if request.method == 'POST':
+        article.delete()
+        messages.success(request, 'Article deleted successfully.')
+        return redirect('shop:vendor_dashboard')
+    return render(request, 'vendor/delete_article.html', {'article': article})
+

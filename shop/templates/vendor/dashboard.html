@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Welcome to your Dashboard, {{ shop.name }}!</h1>
+    
+    <hr>
+    <h2>Your Categories</h2>
+    {% if categories %}
+        <ul>
+        {% for category in categories %}
+            <li>
+                {{ category.name }}
+                <a href="{% url 'shop:update_category' category.id %}">Edit</a>
+                <a href="{% url 'shop:delete_category' category.id %}">Delete</a>
+                <a href="{% url 'shop:category_detail' category.id %}">Details</a>
+            </li>
+        {% empty %}
+            <li>You haven't created any categories yet.</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't created any categories yet.</p>
+    {% endif %}
+    <p><a href="{% url 'shop:create_category' %}">Create a new category</a></p>
+    
+    <hr>
+    <h2>Your Articles</h2>
+    {% if articles %}
+        <ul>
+        {% for article in articles %}
+            <li>
+                {{ article.name }} ({{ article.category.name }})
+                <a href="{% url 'shop:update_article' article.id %}">Edit</a>
+                <a href="{% url 'shop:delete_article' article.id %}">Delete</a>
+                <a href="{% url 'shop:article_detail' article.id %}">Details</a>
+            </li>
+        {% empty %}
+            <li>You haven't created any articles yet.</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't created any articles yet.</p>
+    {% endif %}
+    <p><a href="{% url 'shop:create_article' %}">Create a new article</a></p>
+{% endblock %}

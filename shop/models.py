@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 class Shop(models.Model):
     name = models.CharField(max_length=50, default=None)
     description = models.TextField(default=None)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     image = models.ImageField(
         verbose_name='image',
         upload_to='shop',

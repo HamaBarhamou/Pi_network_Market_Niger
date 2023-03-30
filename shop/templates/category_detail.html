@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ category.name }}</h1>
+    <p>{{ category.description }}</p>
+    {% if category.image %}
+        <img src="{{ category.image.url }}" alt="{{ category.name }}">
+    {% endif %}
+    <h2>Articles in this category:</h2>
+    <ul>
+    {% for article in articles %}
+        <li><a href="{% url 'shop:article_detail' article.id %}">{{ article.name }}</a></li>
+    {% empty %}
+        <li>No articles in this category yet.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
