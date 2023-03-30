@@ -27,8 +27,17 @@
         {% if articles %}
             <ul class="list-group">
                 {% for article in articles %}
-                    {% comment %} <li class="list-group-item">{{ article.name }} - {{ article.price }} €</li> {% endcomment %}
-                    <li class="list-group-item">{{ article.name }} - {{ article.price }} € - Vendeur : <a href="{{ article.get_absolute_url }}">{{ article.vendeur }}</a></li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img src="{{ article.image.url }}" class="img-thumbnail">
+                            </div>
+                            <div class="col-md-10">
+                                <p>{{ article.name }} - {{ article.price }} € - Vendeur : <a href="{{ article.get_absolute_url }}">{{ article.vendeur }}</a></p>
+                            </div>
+                        </div>
+                    </li>
+                    
                 {% endfor %}
             </ul>
             {% if articles.has_other_pages %}
