@@ -15,9 +15,13 @@ class ShopForm(ModelForm):
 class CategoryForm(ModelForm):
     class Meta:
         model = Category
-        fields = '__all__'
+        exclude = ('shop',)
 
 class ArticleForm(ModelForm):
     class Meta:
         model = Article
-        fields = '__all__'
+        exclude = ('vendeur','views_count')
+        
+    def __init__(self, *args, **kwargs):
+        #user = kwargs.pop('user')
+        super(ArticleForm, self).__init__(*args, **kwargs)

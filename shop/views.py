@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Shop, Category, Article
 from .forms import ShopForm, CategoryForm, ArticleForm
+from django import forms
 from user.models import User
 
 
@@ -110,16 +111,22 @@ def delete_category(request, category_id):
 def create_article(request):
     shop = get_object_or_404(Shop, user=request.user)
     if request.method == 'POST':
-        form = ArticleForm(request.POST, request.FILES)
+        form = ArticleForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             article = form.save(commit=False)
+            article.vendeur = request.user
             article.category.shop = shop
             article.save()
             messages.success(request, 'Article created successfully.')
             return redirect('shop:vendor_dashboard')
     else:
-        form = ArticleForm()
+        categories = Category.objects.filter(shop=shop)
+        form = ArticleForm(user=request.user)
+        form.fields['category'].queryset = categories
     return render(request, 'vendor/create_article.html', {'form': form})
+
+
+
 
 @login_required
 def update_article(request, article_id):
@@ -132,7 +139,10 @@ def update_article(request, article_id):
             messages.success(request, 'Article updated successfully.')
             return redirect('shop:vendor_dashboard')
     else:
-        form = ArticleForm(instance=article)
+        #form = ArticleForm(instance=article)
+        categories = Category.objects.filter(shop=shop)
+        form = ArticleForm(instance=article, user=request.user)
+        form.fields['category'].queryset = categories
     return render(request, 'vendor/update_article.html', {'form': form})
 
 def article_detail(request, article_id):
@@ -153,6 +163,7 @@ def delete_article(request, article_id):
 
 def vendeur_detail(request, pk):
     vendeur = get_object_or_404(User, pk=pk)
+    print("vendeur: ", vendeur.avatar)
     articles = Article.objects.filter(vendeur=vendeur)
     context = {'vendeur': vendeur, 'articles': articles}
     return render(request, 'vendor/vendeur_detail.html', context)
