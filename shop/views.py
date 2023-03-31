@@ -133,9 +133,11 @@ def update_article(request, article_id):
     shop = get_object_or_404(Shop, user=request.user)
     article = get_object_or_404(Article, pk=article_id, category__shop=shop)
     if request.method == 'POST':
-        form = ArticleForm(request.POST, request.FILES, instance=article)
+        form = ArticleForm(request.POST, request.FILES, instance=article, user=request.user)
+
         if form.is_valid():
             form.save()
+            
             messages.success(request, 'Article updated successfully.')
             return redirect('shop:vendor_dashboard')
     else:

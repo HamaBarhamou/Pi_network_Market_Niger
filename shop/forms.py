@@ -23,5 +23,5 @@ class ArticleForm(ModelForm):
         exclude = ('vendeur','views_count')
         
     def __init__(self, *args, **kwargs):
-        #user = kwargs.pop('user')
+        user = kwargs.pop('user')
         super(ArticleForm, self).__init__(*args, **kwargs)

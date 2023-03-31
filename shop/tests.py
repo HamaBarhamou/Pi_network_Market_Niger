@@ -98,3 +98,63 @@ class ArticleModelTest(TestCase):
             vendeur=self.user
         )
         self.assertEqual(article.get_absolute_url(), reverse('shop:vendeur_detail', args=[str(self.user.id)]))
+    
+    
+    
+    """ def test_article_creation_with_negative_or_zero_quantity_fails(self):
+        with self.assertRaises(ValueError):
+            Article.objects.create(
+                name='Test Article',
+                description='Test Article Description',
+                qte=-1,
+                price=100,
+                image='shop/test.png',
+                category=self.category,
+                vendeur=self.user
+            )
+
+    def test_article_creation_with_negative_or_zero_price_fails(self):
+        with self.assertRaises(ValueError):
+            Article.objects.create(
+                name='Test Article',
+                description='Test Article Description',
+                qte=10,
+                price=-1,
+                image='shop/test.png',
+                category=self.category,
+                vendeur=self.user
+            )
+
+    def test_article_creation_without_name_fails(self):
+        with self.assertRaises(ValueError):
+            Article.objects.create(
+                description='Test Article Description',
+                qte=10,
+                price=100,
+                image='shop/test.png',
+                category=self.category,
+                vendeur=self.user
+            )
+
+    def test_article_creation_without_category_fails(self):
+        with self.assertRaises(ValueError):
+            Article.objects.create(
+                name='Test Article',
+                description='Test Article Description',
+                qte=10,
+                price=100,
+                image='shop/test.png',
+                vendeur=self.user
+            )
+
+    def test_article_creation_without_vendeur_fails(self):
+        with self.assertRaises(ValueError):
+            Article.objects.create(
+                name='Test Article',
+                description='Test Article Description',
+                qte=10,
+                price=100,
+                image='shop/test.png',
+                category=self.category
+            )
+ """
