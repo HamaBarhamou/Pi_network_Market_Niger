@@ -2,3 +2,8 @@
     width: 200px;
     height: 200px;
 }
+
+.search-page {
+    background-image: url('../images/marcher_Niamey.png');
+    background-size: cover;
+}

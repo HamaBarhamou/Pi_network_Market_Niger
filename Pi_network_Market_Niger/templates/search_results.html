@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="search-page">
     {% if request.GET.q %}
         <h1>Résultats de recherche pour "{{ request.GET.q }}"</h1>
     {% endif %}
@@ -57,4 +58,5 @@
             <p>Aucun article trouvé.</p>
         {% endif %}
     {% endif %}
+  </div>
 {% endblock %}
