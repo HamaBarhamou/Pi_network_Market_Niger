@@ -1,11 +1,21 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-    <h1>{{ article.name }}</h1>
-    <p>{{ article.description }}</p>
-    <p>Price: {{ article.price }}</p>
-    <p>Quantity available: {{ article.qte }}</p>
-    {% if article.image %}
-        <img src="{{ article.image.url }}" alt="{{ article.name }}">
-    {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>{{ article.name }}</h1>
+                <p>{{ article.description }}</p>
+                <p>Price: {{ article.price }}</p>
+                <p>Quantity available: {{ article.qte }}</p>
+            </div>
+            <div class="col-md-6">
+                {% if article.image %}
+                    <img src="{{ article.image.url }}" alt="{{ article.name }}" class="img-fluid">
+                {% else %}
+                    <img src="{% static 'images/default-store.jpg' %}" alt="Default Image" class="img-fluid">
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

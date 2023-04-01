@@ -1,5 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
 from .models import Shop, Category, Article
 from .forms import ShopForm, CategoryForm, ArticleForm
@@ -165,7 +168,16 @@ def delete_article(request, article_id):
 
 def vendeur_detail(request, pk):
     vendeur = get_object_or_404(User, pk=pk)
-    print("vendeur: ", vendeur.avatar)
     articles = Article.objects.filter(vendeur=vendeur)
+    paginator = Paginator(articles, 9)
+    page = request.GET.get('page')
+    try:
+        articles = paginator.page(page)
+    except PageNotAnInteger:
+        articles = paginator.page(1)
+    except EmptyPage:
+        articles = paginator.page(paginator.num_pages)
     context = {'vendeur': vendeur, 'articles': articles}
     return render(request, 'vendor/vendeur_detail.html', context)
+
+

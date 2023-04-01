@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "bootstrap5",
     'widget_tweaks',
+    'django_extensions',
     'user.apps.UserConfig',
     'shop.apps.ShopConfig',
 ]
