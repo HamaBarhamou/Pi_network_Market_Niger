@@ -1,62 +1,60 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="search-page">
-    {% if request.GET.q %}
-        <h1>Résultats de recherche pour "{{ request.GET.q }}"</h1>
-    {% endif %}
-    <form method="get">
-        <div class="form-group">
-            <div class="input-group">
-                <input type="text" class="form-control" name="q" placeholder="Rechercher un article" value="{{ request.GET.q }}">
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Rechercher</button>
+<div style="background-image: url('../static/images/marcher_Niamey.png'); background-repeat: no-repeat; background-position: center top; background-size: contain; padding-top: 150px;">
+        {% if request.GET.q %}
+            <h1>Résultats de recherche pour "{{ request.GET.q }}"</h1>
+        {% endif %}
+        <form method="get">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="q" placeholder="Rechercher un article" value="{{ request.GET.q }}">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Rechercher</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-    {% if not request.GET.q and popular_articles %}
-        <h2>Articles les plus consultés :</h2>
-        <ul class="list-group">
-            {% for article in popular_articles %}
-                <li class="list-group-item">{{ article.name }} - {{ article.price }} €</li>
-
-            {% endfor %}
-        </ul>
-    {% endif %}
-    {% if request.GET.q %}
-        {% if articles %}
+        </form>
+        {% if not request.GET.q and popular_articles %}
+            <h2>Articles les plus consultés :</h2>
             <ul class="list-group">
-                {% for article in articles %}
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <img src="{{ article.image.url }}" class="img-thumbnail">
-                            </div>
-                            <div class="col-md-10">
-                                <p>{{ article.name }} - {{ article.price }} FCFA - Vendeur : <a href="{{ article.get_absolute_url }}">{{ article.vendeur }}</a></p>
-                            </div>
-                        </div>
-                    </li>
-                    
+                {% for article in popular_articles %}
+                    <li class="list-group-item">{{ article.name }} - {{ article.price }} €</li>
                 {% endfor %}
             </ul>
-            {% if articles.has_other_pages %}
-                <div class="pagination justify-content-center mt-4">
-                    {% if articles.has_previous %}
-                        <a href="?q={{ request.GET.q }}&page={{ articles.previous_page_number }}" class="btn btn-primary">Précédent</a>
-                    {% endif %}
-                    <span class="mx-3 align-self-center">
-                        Page {{ articles.number }} sur {{ articles.paginator.num_pages }}.
-                    </span>
-                    {% if articles.has_next %}
-                        <a href="?q={{ request.GET.q }}&page={{ articles.next_page_number }}" class="btn btn-primary">Suivant</a>
-                    {% endif %}
-                </div>
-            {% endif %}
-        {% else %}
-            <p>Aucun article trouvé.</p>
         {% endif %}
-    {% endif %}
-  </div>
+        {% if request.GET.q %}
+            {% if articles %}
+                <ul class="list-group">
+                    {% for article in articles %}
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <img src="{{ article.image.url }}" class="img-fluid">
+                                </div>
+                                <div class="col-md-10">
+                                    <p>{{ article.name }} - {{ article.price }} FCFA - Vendeur : <a href="{{ article.get_absolute_url }}">{{ article.vendeur }}</a></p>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if articles.has_other_pages %}
+                    <div class="pagination justify-content-center mt-4">
+                        {% if articles.has_previous %}
+                            <a href="?q={{ request.GET.q }}&page={{ articles.previous_page_number }}" class="btn btn-primary">Précédent</a>
+                        {% endif %}
+                        <span class="mx-3 align-self-center">
+                            Page {{ articles.number }} sur {{ articles.paginator.num_pages }}.
+                        </span>
+                        {% if articles.has_next %}
+                            <a href="?q={{ request.GET.q }}&page={{ articles.next_page_number }}" class="btn btn-primary">Suivant</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% else %}
+                <p>Aucun article trouvé.</p>
+            {% endif %}
+        {% endif %}
+    </div>
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 
 
 
@@ -45,4 +46,10 @@ class Article(models.Model):
     
     def get_absolute_url(self):
         return reverse('shop:vendeur_detail', args=[str(self.vendeur.id)])
+    
+    def clean(self):
+        if self.qte <= 0:
+            raise ValidationError('La quantité doit être supérieure à zéro.')
+        if self.price <= 0:
+            raise ValidationError('Le prix doit être supérieur à zéro.')
 

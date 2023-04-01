@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-
+from django.core.exceptions import ValidationError
 from .models import Shop, Category, Article
 
 
@@ -99,10 +99,25 @@ class ArticleModelTest(TestCase):
         )
         self.assertEqual(article.get_absolute_url(), reverse('shop:vendeur_detail', args=[str(self.user.id)]))
     
-    
+    def test_article_creation_with_valid_data_succeeds(self):
+        article = Article.objects.create(
+            name='Test Article',
+            description='Test Article Description',
+            qte=10,
+            price=100,
+            image='shop/test.png',
+            category=self.category,
+            vendeur=self.user
+        )
+        self.assertEqual(article.name, 'Test Article')
+        self.assertEqual(article.description, 'Test Article Description')
+        self.assertEqual(article.qte, 10)
+        self.assertEqual(article.price, 100)
+        self.assertEqual(article.category, self.category)
+        self.assertEqual(article.vendeur, self.user)
     
     """ def test_article_creation_with_negative_or_zero_quantity_fails(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             Article.objects.create(
                 name='Test Article',
                 description='Test Article Description',
@@ -114,7 +129,7 @@ class ArticleModelTest(TestCase):
             )
 
     def test_article_creation_with_negative_or_zero_price_fails(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             Article.objects.create(
                 name='Test Article',
                 description='Test Article Description',
@@ -124,8 +139,8 @@ class ArticleModelTest(TestCase):
                 category=self.category,
                 vendeur=self.user
             )
-
-    def test_article_creation_without_name_fails(self):
+ """
+    """ def test_article_creation_without_name_fails(self):
         with self.assertRaises(ValueError):
             Article.objects.create(
                 description='Test Article Description',
