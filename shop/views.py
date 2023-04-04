@@ -18,8 +18,20 @@ def vendor_dashboard(request):
         # Rediriger l'utilisateur vers la page de création de boutique
         return redirect('shop:create_shop')
 
-    categories = Category.objects.filter(shop=shop)
-    articles = Article.objects.filter(category__shop=shop)
+    category_list = Category.objects.filter(shop=shop)
+    paginator = Paginator(category_list, 4) # Afficher 10 catégories par page
+
+    page = request.GET.get('page')
+    try:
+        categories = paginator.page(page)
+    except PageNotAnInteger:
+        # Si la page n'est pas un entier, afficher la première page
+        categories = paginator.page(1)
+    except EmptyPage:
+        # Si la page est vide, afficher la dernière page
+        categories = paginator.page(paginator.num_pages)
+
+    return render(request, 'vendor/dashboard.html', {'shop': shop, 'categories': categories})
     return render(request, 'vendor/dashboard.html', {'shop': shop, 'categories': categories, 'articles': articles})
 
 

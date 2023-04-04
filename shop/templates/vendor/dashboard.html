@@ -1,45 +1,71 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
     <h1>Welcome to your Dashboard, {{ shop.name }}!</h1>
     
     <hr>
     <h2>Your Categories</h2>
+    <p><a href="{% url 'shop:create_category' %}" class="btn btn-primary">Create a new category</a></p>
     {% if categories %}
-        <ul>
-        {% for category in categories %}
-            <li>
-                {{ category.name }}
-                <a href="{% url 'shop:update_category' category.id %}">Edit</a>
-                <a href="{% url 'shop:delete_category' category.id %}">Delete</a>
-                <a href="{% url 'shop:category_detail' category.id %}">Details</a>
-            </li>
-        {% empty %}
-            <li>You haven't created any categories yet.</li>
-        {% endfor %}
-        </ul>
+        <div class="scrollbar scrollbar-primary">
+            <div class="force-overflow">
+                <ul class="list-group">
+                    {% for category in categories %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ category.name }}
+                        <div class="d-flex align-items-center">
+                            {% if category.image %}
+                                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-thumbnail mr-2">
+                            {% else %}
+                                <img src="{% static 'images/default-store.jpg' %}" alt="{{ category.name }}" class="img-thumbnail mr-2">
+                            {% endif %}
+                            <div>
+                                <a href="{% url 'shop:update_category' category.id %}" class="btn btn-sm btn-primary mr-2">Edit</a>
+                                <a href="{% url 'shop:delete_category' category.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                <a href="{% url 'shop:category_detail' category.id %}" class="btn btn-sm btn-info">Details</a>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% if categories.has_other_pages %}
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if categories.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ categories.previous_page_number }}">&laquo; Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo; Previous</span>
+                </li>
+                {% endif %}
+                {% for num in categories.paginator.page_range %}
+                {% if categories.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }} <span class="sr-only">(current)</span></span>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {% if categories.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ categories.next_page_number }}">Next &raquo;</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Next &raquo;</span>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
     {% else %}
         <p>You haven't created any categories yet.</p>
     {% endif %}
-    <p><a href="{% url 'shop:create_category' %}">Create a new category</a></p>
-    
-    <hr>
-    <h2>Your Articles</h2>
-    {% if articles %}
-        <ul>
-        {% for article in articles %}
-            <li>
-                {{ article.name }} ({{ article.category.name }})
-                <a href="{% url 'shop:update_article' article.id %}">Edit</a>
-                <a href="{% url 'shop:delete_article' article.id %}">Delete</a>
-                <a href="{% url 'shop:article_detail' article.id %}">Details</a>
-            </li>
-        {% empty %}
-            <li>You haven't created any articles yet.</li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>You haven't created any articles yet.</p>
-    {% endif %}
-    <p><a href="{% url 'shop:create_article' %}">Create a new article</a></p>
 {% endblock %}
