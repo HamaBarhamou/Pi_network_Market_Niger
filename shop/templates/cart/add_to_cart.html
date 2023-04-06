@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Ajouter au panier</h1>
+<form method="POST">
+  {% csrf_token %}
+  <label for="quantity">Quantité :</label>
+  <input type="number" name="quantity" id="quantity" value="1" min="1">
+  <button type="submit">Ajouter au panier</button>
+</form>
+{% endblock %}

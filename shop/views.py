@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
-from .models import Shop, Category, Article
+from .models import Shop, Category, Article, Cart, CartItem
 from .forms import ShopForm, CategoryForm, ArticleForm
 from django import forms
 from user.models import User
@@ -193,3 +193,66 @@ def vendeur_detail(request, pk):
     return render(request, 'vendor/vendeur_detail.html', context)
 
 
+def shop_list(request):
+    shops = Shop.objects.all()
+    search_query = request.GET.get('q')
+    if search_query:
+        shops = shops.filter(name__icontains=search_query)
+    paginator = Paginator(shops, 10)  # afficher 10 boutiques par page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'shop/shop_list.html', {'page_obj': page_obj, 'search_query': search_query})
+
+
+
+@login_required
+def cart_detail(request):
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart_items = cart.cartitem_set.all()
+    context = {
+        'cart': cart,
+        'cart_items': cart_items,
+    }
+    return render(request, 'cart/cart_detail.html', context)
+
+
+@login_required
+def cart_add(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, article=article)
+    if not created:
+        cart_item.qte += 1
+        cart_item.save()
+    messages.success(request, f"{article.name} a été ajouté au panier.")
+    return redirect('shop:cart_detail')
+
+
+@login_required
+def cart_remove(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, id=cart_item_id, cart__user=request.user)
+    article_name = cart_item.article.name
+    cart_item.delete()
+    messages.success(request, f"{article_name} a été retiré du panier.")
+    return redirect('shop:cart_detail')
+
+
+@login_required
+def cart_update(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, id=cart_item_id, cart__user=request.user)
+    if request.method == 'POST':
+        qte = request.POST.get('qte', 1)
+        try:
+            qte = int(qte)
+        except ValueError:
+            qte = 1
+        if qte < 1:
+            qte = 1
+        cart_item.qte = qte
+        cart_item.save()
+        messages.success(request, f"La quantité pour {cart_item.article.name} a été mise à jour.")
+        return redirect('shop:cart_detail')
+    context = {
+        'cart_item': cart_item,
+    }
+    return render(request, 'cart/cart_update.html', context)

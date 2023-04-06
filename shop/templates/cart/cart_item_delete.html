@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Supprimer un article</h1>
+<p>Êtes-vous sûr de vouloir supprimer l'article "{{ cart_item.article.name }}" ?</p>
+<form method="POST">
+  {% csrf_token %}
+  <button type="submit">Oui</button>
+  <a href="{% url 'cart_detail' %}">Non</a>
+</form>
+{% endblock %}

@@ -11,6 +11,18 @@
                 {% if request.user == article.vendeur %}
                     <p>Nombre de vues: {{ article.views_count }}</p>
                 {% endif %}
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'shop:cart_add' article.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="article_id" value="{{ article.id }}">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" id="quantity" min="1" value="1">
+                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    </form>
+                {% else %}
+                    <p>Please <a href="{% url 'user:login' %}?next={{ request.path }}">log in</a> to add items to your cart.</p>
+                {% endif %}
+
             </div>
             <div class="col-md-6">
                 {% if article.image %}

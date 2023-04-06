@@ -38,7 +38,10 @@
                                     {% endif %}
                                 </div>
                                 <div class="col-md-10">
-                                    <p>{{ article.name }} - {{ article.price }} FCFA - Vendeur : <a href="{{ article.get_absolute_url }}">{{ article.vendeur }}</a></p>
+                                    <p>
+                                        
+                                        <a href="{% url 'shop:article_detail' article_id=article.id %}">{{ article.name }} - {{ article.price }} FCFA   </a>  --- Vendeur : <a href="{{ article.get_absolute_url }}">{{ article.vendeur }}</a>
+                                    </p>
                                 </div>
                             </div>
                         </li>

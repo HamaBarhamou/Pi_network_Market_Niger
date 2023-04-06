@@ -53,3 +53,24 @@ class Article(models.Model):
         if self.price <= 0:
             raise ValidationError('Le prix doit être supérieur à zéro.')
 
+
+class Cart(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Cart of {self.user.username}"
+    
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    qte = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.qte} x {self.article.name} in cart of {self.cart.user.username}"
+    
+    def clean(self):
+        if self.qte < 1:
+            raise ValidationError('La quantité doit être supérieure à zéro.')

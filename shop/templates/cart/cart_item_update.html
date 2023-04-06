@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Modifier la quantité d'un article</h1>
+<form method="POST">
+  {% csrf_token %}
+  <label for="quantity">Quantité :</label>
+  <input type="number" name="quantity" id="quantity" value="{{ cart_item.qte }}" min="1">
+  <button type="submit">Modifier</button>
+</form>
+{% endblock %}

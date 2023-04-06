@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <h1>Marketplace</h1>
+
+    <form method="GET" action="{% url 'shop:shop_list' %}">
+        <div class="input-group mb-3">
+            <input type="text" name="q" value="{{ search_query }}" placeholder="Search..." class="form-control">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <hr>
+
+    {% for shop in page_obj %}
+        <div class="card mb-3">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    {% if shop.image %}
+                        <img src="{{ shop.image.url }}" class="card-img" alt="{{ shop.name }}">
+                    {% else %}
+                        <img src="{% static 'images/default-store.jpg' %}" alt="Default Image" class="img-fluid">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ shop.name }}</h5>
+                        <p class="card-text">{{ shop.description }}</p>
+                        <a href="{% url 'shop:vendeur_detail' shop.user.id %}" class="btn btn-primary">View Shop</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No shops found.</p>
+    {% endfor %}
+
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1{% if search_query %}&q={{ search_query }}{% endif %}">&laquo; first</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">&lsaquo; previous</a>
+                </li>
+            {% endif %}
+
+            <li class="page-item active">
+                <a class="page-link" href="?page={{ page_obj.number }}{% if search_query %}&q={{ search_query }}{% endif %}">{{ page_obj.number }}</a>
+            </li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">next &rsaquo;</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&q={{ search_query }}{% endif %}">last &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}

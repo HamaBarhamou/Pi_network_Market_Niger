@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Mon panier</h1>
+
+{% if cart_items %}
+  <ul>
+    {% for item in cart_items %}
+      <li>{{ item.article.name }} - {{ item.qte }} x {{ item.article.price }} €</li>
+    {% endfor %}
+  </ul>
+  <p>Total : {{ cart_total }} €</p>
+{% else %}
+  <p>Votre panier est vide.</p>
+{% endif %}
+
+{% endblock %}
