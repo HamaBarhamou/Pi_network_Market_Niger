@@ -29,7 +29,7 @@
                 </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'shop:cart_detail' %}">
+                    <a class="nav-link" href="{% url 'panier:cart_detail' %}">
                     <i class="fa fa-shopping-cart"></i> Mon panier
                     {% comment %} <span class="badge badge-pill badge-info">{% cart_item_count %}</span> {% endcomment %}
                     </a>

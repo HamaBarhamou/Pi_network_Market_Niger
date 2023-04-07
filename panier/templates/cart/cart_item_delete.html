@@ -6,6 +6,6 @@
 <form method="POST">
   {% csrf_token %}
   <button type="submit">Oui</button>
-  <a href="{% url 'cart_detail' %}">Non</a>
+  <a href="{% url 'panier:cart_detail' %}">Non</a>
 </form>
 {% endblock %}

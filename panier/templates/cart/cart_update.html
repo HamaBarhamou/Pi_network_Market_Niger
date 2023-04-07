@@ -9,6 +9,6 @@
       <input type="number" id="id_qte" name="qte" class="form-control" min="1" value="{{ cart_item.qte }}">
     </div>
     <button type="submit" class="btn btn-primary">Enregistrer</button>
-    <a href="{% url 'shop:cart_detail' %}" class="btn btn-secondary">Retour au panier</a>
+    <a href="{% url 'panier:cart_detail' %}" class="btn btn-secondary">Retour au panier</a>
   </form>
 {% endblock %}

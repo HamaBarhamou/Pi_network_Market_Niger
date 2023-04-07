@@ -12,7 +12,7 @@
                     <p>Nombre de vues: {{ article.views_count }}</p>
                 {% endif %}
                 {% if user.is_authenticated %}
-                    <form method="post" action="{% url 'shop:cart_add' article.id %}">
+                    <form method="post" action="{% url 'panier:cart_add' article.id %}">
                         {% csrf_token %}
                         <input type="hidden" name="article_id" value="{{ article.id }}">
                         <label for="quantity">Quantity:</label>

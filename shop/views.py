@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
-from .models import Shop, Category, Article, Cart, CartItem
+from .models import Shop, Category, Article
 from .forms import ShopForm, CategoryForm, ArticleForm
 from django import forms
 from user.models import User
@@ -205,7 +205,7 @@ def shop_list(request):
 
 
 
-@login_required
+""" @login_required
 def cart_detail(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
     cart_items = cart.cartitem_set.all()
@@ -257,4 +257,4 @@ def cart_update(request, cart_item_id):
     context = {
         'cart_item': cart_item,
     }
-    return render(request, 'cart/cart_update.html', context)
+    return render(request, 'cart/cart_update.html', context) """

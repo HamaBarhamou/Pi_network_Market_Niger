@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'user.apps.UserConfig',
     'shop.apps.ShopConfig',
+    'panier.apps.PanierConfig',
 ]
 
 MIDDLEWARE = [

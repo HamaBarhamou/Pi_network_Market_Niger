@@ -54,7 +54,7 @@ class Article(models.Model):
             raise ValidationError('Le prix doit être supérieur à zéro.')
 
 
-class Cart(models.Model):
+""" class Cart(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -73,4 +73,4 @@ class CartItem(models.Model):
     
     def clean(self):
         if self.qte < 1:
-            raise ValidationError('La quantité doit être supérieure à zéro.')
+            raise ValidationError('La quantité doit être supérieure à zéro.') """
