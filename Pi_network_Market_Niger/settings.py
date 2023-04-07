@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'shop.apps.ShopConfig',
     'panier.apps.PanierConfig',
+    'commande.apps.CommandeConfig',
 ]
 
 MIDDLEWARE = [

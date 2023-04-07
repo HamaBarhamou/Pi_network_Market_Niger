@@ -1,0 +1,15 @@
+Voici quelques fonctionnalités que vous pouvez envisager d'ajouter à votre application :
+
+Gestion des commandes : permettre aux utilisateurs de passer des commandes en utilisant leur panier et aux boutiques de gérer les commandes 
+                        qu'elles ont reçues.
+
+Paiement en ligne : permettre aux utilisateurs de payer pour leurs achats en ligne à l'aide de cartes de crédit ou d'autres méthodes de paiement.
+
+Système de notation et d'avis : permettre aux utilisateurs de donner leur avis sur les produits qu'ils ont achetés et les boutiques qu'ils ont 
+                                visitées.
+
+Recommandations de produits : utiliser les données d'achat et les habitudes de navigation des utilisateurs pour recommander des produits qui 
+                              pourraient les intéresser.
+
+Notifications : envoyer des notifications par e-mail ou par SMS pour informer les utilisateurs de l'état de leur commande, les promotions en 
+                cours, etc.
