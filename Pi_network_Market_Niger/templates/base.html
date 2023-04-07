@@ -28,12 +28,15 @@
                     <a class="nav-link" href="{% url 'shop:shop_list' %}">Aller au Marché</a>
                 </li>
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'panier:cart_detail' %}">
-                    <i class="fa fa-shopping-cart"></i> Mon panier
-                    {% comment %} <span class="badge badge-pill badge-info">{% cart_item_count %}</span> {% endcomment %}
-                    </a>
-                </li>
+                {% with cart_items=request.user.cart.cartitem_set.all %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'panier:cart_detail' %}">
+                        <i class="fa fa-shopping-cart"></i> Mon panier
+                        <span class="badge badge-pill badge-info">{{ cart_items.count }}</span>
+                        </a>
+                    </li>
+                {% endwith %}
+
                 {% endif %}
 
                 {% if user.is_authenticated %}
@@ -73,6 +76,14 @@
         </div>
     </nav>
     <div class="container my-5" >
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
         {% block content %}{% endblock %}
     </div>
 </body>
