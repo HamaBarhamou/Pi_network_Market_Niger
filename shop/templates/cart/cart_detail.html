@@ -1,17 +1,49 @@
 {% extends 'base.html' %}
-
+{% load mathfilters %}
+{% load static %}
 {% block content %}
-<h1>Mon panier</h1>
+    <h1>Mon panier</h1>
 
-{% if cart_items %}
-  <ul>
-    {% for item in cart_items %}
-      <li>{{ item.article.name }} - {{ item.qte }} x {{ item.article.price }} €</li>
-    {% endfor %}
-  </ul>
-  <p>Total : {{ cart_total }} €</p>
-{% else %}
-  <p>Votre panier est vide.</p>
-{% endif %}
-
+    {% if cart_items %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Article</th>
+                    <th>Image</th>
+                    <th>Prix unitaire</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                    <tr>
+                        <td>
+                          {% if item.article.image %}
+                              <img src="{{ item.article.image.url }}" alt="{{ item.article.name }}" width="50">
+                          {% else %}
+                              <img src="{% static 'images/default-store.jpg' %}" alt="Default Image" width="50">
+                          {% endif %}
+                        </td>
+                        <td>{{ item.article.name }}</td>
+                        <td>{{ item.article.price }} FCFA</td>
+                        <td>{{ item.qte }}</td>
+                        <td>{{ item.qte|mul:item.article.price|floatformat:2 }} FCFA</td>
+                        <td>
+                            <a href="{% url 'shop:cart_update' item.id %}" class="btn btn-primary btn-sm">Modifier</a>
+                            <a href="{% url 'shop:cart_remove' item.id%}" class="btn btn-danger btn-sm">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="4"><strong>Total:</strong></td>
+                    <td><strong>{{ cart_total }} FCFA</strong></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    {% else %}
+        <p>Votre panier est vide.</p>
+    {% endif %}
 {% endblock %}

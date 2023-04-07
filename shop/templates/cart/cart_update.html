@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Modifier la quantité</h1>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="id_qte">Quantité:</label>
+      <input type="number" id="id_qte" name="qte" class="form-control" min="1" value="{{ cart_item.qte }}">
+    </div>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+    <a href="{% url 'shop:cart_detail' %}" class="btn btn-secondary">Retour au panier</a>
+  </form>
+{% endblock %}

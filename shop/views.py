@@ -209,9 +209,11 @@ def shop_list(request):
 def cart_detail(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
     cart_items = cart.cartitem_set.all()
+    cart_total = sum(item.qte * item.article.price for item in cart_items)
     context = {
         'cart': cart,
         'cart_items': cart_items,
+        'cart_total': cart_total,
     }
     return render(request, 'cart/cart_detail.html', context)
 
