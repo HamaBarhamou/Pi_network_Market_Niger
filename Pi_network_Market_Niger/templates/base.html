@@ -28,6 +28,15 @@
                     <a class="nav-link" href="{% url 'shop:shop_list' %}">Aller au Marché</a>
                 </li>
                 {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'shop:cart_detail' %}">
+                    <i class="fa fa-shopping-cart"></i> Mon panier
+                    {% comment %} <span class="badge badge-pill badge-info">{% cart_item_count %}</span> {% endcomment %}
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Mon compte
