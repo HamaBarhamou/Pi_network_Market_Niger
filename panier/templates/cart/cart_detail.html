@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load mathfilters %}
 {% load static %}
+
 {% block content %}
     <h1>Mon panier</h1>
 
@@ -43,6 +44,9 @@
                 </tr>
             </tbody>
         </table>
+        <div class="text-center">
+            <a href="{% url 'commande:order_create' %}" class="btn btn-success">Passer la commande</a>
+        </div>
     {% else %}
         <p>Votre panier est vide.</p>
     {% endif %}

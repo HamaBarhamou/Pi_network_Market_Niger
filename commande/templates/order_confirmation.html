@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Confirmation de commande</h1>
+<p>Merci pour votre commande. Votre commande a été confirmée et sera expédiée bientôt.</p>
+<h3>Détails de la commande</h3>
+<ul>
+    <li>ID de commande : {{ order.id }}</li>
+    <li>Date de commande : {{ order.created_date }}</li>
+    <li>Montant total : {{ order.total_amount }}</li>
+</ul>
+<a href="{% url 'commande:order_detail' order.id %}">Voir les détails de la commande</a>
+{% endblock %}

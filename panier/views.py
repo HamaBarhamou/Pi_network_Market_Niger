@@ -28,6 +28,7 @@ def cart_add(request, article_id):
         cart_item.qte += 1
         cart_item.save()
     messages.success(request, f"{article.name} a été ajouté au panier.")
+    request.session['cart'] = {'cart_id': cart.id}
     return redirect('panier:cart_detail')
 
 

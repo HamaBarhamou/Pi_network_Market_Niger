@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% load cart_tags %}
+
+{% block content %}
+    <h1>Détails de la commande</h1>
+    <h3>Informations de la commande</h3>
+    <ul>
+        <li>ID de la commande : {{ order.id }}</li>
+        <li>Date de la commande : {{ order.created_date }}</li>
+        <li>Statut de la commande : {{ order.status }}</li>
+        <li>Montant total : {{ order.total_amount }}</li>
+    </ul>
+    <h3>Articles de la commande</h3>
+    {% if items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Quantité</th>
+                    <th>Prix</th>
+                    <th>Sous-total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.quantity|multiply:item.price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right"><strong>Total :</strong></td>
+                    <td>{{ order.total_amount }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    {% else %}
+        <p>Aucun article dans cette commande.</p>
+    {% endif %}
+    {% if order.status == 'pending' %}
+        <p><a href="{% url 'commande:order_confirm' order.id %}">Confirmer la commande</a></p>
+    {% elif order.status == 'confirmed' %}
+        <p><a href="{% url 'commande:order_ship' order.id %}">Expédier la commande</a></p>
+    {% elif order.status == 'shipped' %}
+        <p><a href="{% url 'commande:order_deliver' order.id %}">Marquer comme livré</a></p>
+    {% endif %}
+{% endblock %}
