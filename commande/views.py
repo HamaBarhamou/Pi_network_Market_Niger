@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from panier.models import Cart
+from panier.models import Cart, CartItem
 from .models import Order, OrderItem
 from .forms import OrderForm
 
@@ -34,8 +34,12 @@ def order_confirmation(request):
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     items = OrderItem.objects.filter(order=order)
-    context = {'order': order, 'items': items}
+    if not items:
+        context = {'order': order, 'message': 'There are no items in this order.'}
+    else:
+        context = {'order': order, 'items': items}
     return render(request, 'order_detail.html', context)
+
 
 @login_required
 def order_cancel(request, order_id):
@@ -60,8 +64,12 @@ def order_confirm(request, order_id):
             form.save()
             order.status = 'confirmed'
             order.save()
-            # Vide le panier
+            # Vide le panier 
             #Cart.objects.filter(user=request.user).delete()
+            cart_items = CartItem.objects.filter(cart__user=request.user)
+            for cart_item in cart_items:
+                cart_item.delete()
+
             return redirect('commande:order_detail', order_id=order.id)
     else:
         form = OrderForm(instance=order)

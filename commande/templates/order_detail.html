@@ -12,7 +12,7 @@
         <li>Montant total : {{ order.total_amount }}</li>
     </ul>
     <h3>Articles de la commande</h3>
-    {% if items %}
+    {% if order.orderitem_set.exists %}
         <table>
             <thead>
                 <tr>
@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in items %}
+                {% for item in order.orderitem_set.all %}
                     <tr>
                         <td>{{ item.product.name }}</td>
                         <td>{{ item.quantity }}</td>
