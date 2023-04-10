@@ -12,6 +12,9 @@
                 <li class="list-group-item">Date de la commande : {{ order.created_date }}</li>
                 <li class="list-group-item">Statut de la commande : {{ order.status }}</li>
                 <li class="list-group-item">Montant total : {{ order.total_amount }}</li>
+                {% if order.tracking_id %}
+                    <li class="list-group-item"><a href="{% url 'order_tracking' order.tracking_id %}">Suivre la commande</a></li>
+                {% endif %}
             </ul>
         </div>
         <div class="col-md-6">

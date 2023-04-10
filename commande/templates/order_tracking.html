@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>Suivi de commande</h1>
+
+    <p>Numéro de commande : {{ order.id }}</p>
+    <p>Date de la commande : {{ order.created_at }}</p>
+    <p>Statut de la commande : {{ order.status }}</p>
+    <hr>
+
+    {% if order.status == 'confirmed' %}
+        <p>Votre commande a été confirmée et sera expédiée bientôt.</p>
+    {% elif order.status == 'shipped' %}
+        <p>Votre commande a été expédiée.</p>
+        <p>Numéro de suivi : {{ order.tracking_number }}</p>
+        <p>Transporteur : {{ order.shipping_carrier }}</p>
+    {% elif order.status == 'delivered' %}
+        <p>Votre commande a été livrée le {{ order.delivered_at }}.</p>
+    {% endif %}
+
+{% endblock %}

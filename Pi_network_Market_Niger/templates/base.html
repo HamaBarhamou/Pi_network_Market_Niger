@@ -39,26 +39,32 @@
 
                 {% endif %}
 
+                {% load static %}
+
                 {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Mon compte
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        {% if user.fonction == 2 %}
-                            <a class="dropdown-item" href="#">Tableau de bord Vendeur</a>
-                            <a class="dropdown-item" href="{% url 'shop:vendor_dashboard' %}">Gérer la boutique</a>
-                        {% elif user.fonction == 3 %}
-                            <a class="dropdown-item" href="#">Tableau de bord Client</a>
-                        {% elif user.fonction == 4 %}
-                            <a class="dropdown-item" href="#">Tableau de bord Livreur</a>
-                        {% endif %}
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{user.username}} <img src="{% if user.avatar %}{{ user.avatar.url }}{% else %}{% static 'user/images/avatar.jpg' %}{% endif %}" alt="Avatar" class="rounded-circle" height="30" width="30">
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% if user.fonction == 2 %}
+                                <a class="dropdown-item" href="#">Tableau de bord Vendeur</a>
+                                <a class="dropdown-item" href="{% url 'shop:vendor_dashboard' %}">Gérer la boutique</a>
+                            {% elif user.fonction == 3 %}
+                                <a class="dropdown-item" href="#">Tableau de bord Client</a>
+                                <a class="dropdown-item" href="{% url 'commande:order_history' %}">Mes Commandes</a>
+                            {% elif user.fonction == 4 %}
+                                <a class="dropdown-item" href="#">Tableau de bord Livreur</a>
+                            {% endif %}
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Modifier le profil</a>
-                                <a class="dropdown-item" href="{% url 'user:logout' %}">Déconnexion</a>
-                            </div>
+                            <a class="dropdown-item" href="#">Modifier le profil</a>
+                            <a class="dropdown-item" href="{% url 'user:logout' %}">Déconnexion</a>
+                        </div>
+                        
                     </li>
                 {% endif %}
+
+
               </ul>
               
             <ul class="navbar-nav">

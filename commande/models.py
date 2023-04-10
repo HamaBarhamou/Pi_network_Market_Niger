@@ -27,9 +27,21 @@ class Order(models.Model):
     status = models.CharField(choices=STATUS_CHOICES, default='pending', max_length=20)
     total_amount = models.DecimalField(max_digits=7, decimal_places=2)
     payment_method = models.CharField(choices=PAYMENT_METHOD_CHOICES, default='cash_on_delivery', max_length=20)
+    # Date d'expédition de la commande
+    shipped_at = models.DateTimeField(null=True, blank=True)
+    # Date de livraison de la commande
+    delivered_at = models.DateTimeField(null=True, blank=True)
+    # Identifiant de suivi de la commande
+    tracking_id = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return f"Commande {self.id} de {self.user.username}"
+    
+    def get_total_cost(self):
+        total_cost = sum(item.qte * item.article.price for item in self.orderitem_set.all())
+        return total_cost
+
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)

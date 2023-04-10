@@ -43,8 +43,6 @@ def order_confirmation(request):
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     items = OrderItem.objects.filter(order=order)
-    
-    print("items:",items )
         
     if not items:
         context = {'order': order, 'message': 'There are no items in this order.'}
@@ -123,3 +121,14 @@ def order_deliver(request, order_id):
         return redirect('commande:order_detail', order_id=order.id)
     return render(request, 'order_deliver.html', {'order': order})
 
+@login_required
+def order_history(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    context = {'orders': orders}
+    return render(request, 'order_history.html', context)
+
+@login_required
+def order_tracking(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    context = {'order': order}
+    return render(request, 'order_tracking.html', context)
