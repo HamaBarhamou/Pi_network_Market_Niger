@@ -2,10 +2,28 @@
 
 {% block content %}
 
-    <h1>Confirmer la commande</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Confirmer la commande">
-    </form>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <h1 class="text-center mb-4">Confirmer la commande</h1>
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">Détails de la commande</h2>
+                    <p class="card-text">Numéro de commande : {{ order.id }}</p>
+                    <p class="card-text">Date de la commande : {{ order.created_at }}</p>
+                    <p class="card-text">Statut de la commande : {{ order.status }}</p>
+                    <hr>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <h2 class="mt-4 mb-3">Mode de paiement</h2>
+                        {{ payment_form.as_p }}
+                        <input type="submit" class="btn btn-primary btn-lg btn-block" value="Confirmer la commande">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

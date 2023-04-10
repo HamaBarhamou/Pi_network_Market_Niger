@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from panier.models import Cart, CartItem
 from .models import Order, OrderItem
-from .forms import OrderForm
+from .forms import OrderForm, PaymentForm
 
 
 
@@ -65,6 +65,8 @@ def order_cancel(request, order_id):
     context = {'order': order}
     return render(request, 'commande/order_cancel.html', context)
 
+from django.contrib import messages
+
 @login_required
 def order_confirm(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
@@ -72,19 +74,31 @@ def order_confirm(request, order_id):
         return redirect('commande:order_detail', order_id=order.id)
     if request.method == 'POST':
         form = OrderForm(request.POST, instance=order)
-        if form.is_valid():
+        payment_form = PaymentForm(request.POST)  # Ajout du formulaire de mode de paiement
+        if form.is_valid() and payment_form.is_valid():
             form.save()
             order.status = 'confirmed'
             order.save()
+
+            # Enregistrer le mode de paiement dans la commande
+            payment = payment_form.cleaned_data.get('payment')
+            order.payment_method = payment
+            order.save()
+
             # Vide le panier 
             cart = Cart.objects.get(user=request.user)
             cart.clear_cart()
 
+            messages.success(request, 'Votre commande a été confirmée avec succès.')
             return redirect('commande:order_detail', order_id=order.id)
+        else:
+            messages.error(request, 'Il y a des erreurs dans votre formulaire.')
     else:
         form = OrderForm(instance=order)
-    context = {'order': order, 'form': form}
+        payment_form = PaymentForm()  # Création d'une nouvelle instance du formulaire de mode de paiement
+    context = {'order': order, 'form': form, 'payment_form': payment_form}  # Ajout du formulaire de mode de paiement dans le contexte
     return render(request, 'order_confirm.html', context)
+
 
 @login_required
 def order_ship(request, order_id):
@@ -108,3 +122,4 @@ def order_deliver(request, order_id):
         order.save()
         return redirect('commande:order_detail', order_id=order.id)
     return render(request, 'order_deliver.html', {'order': order})
+
