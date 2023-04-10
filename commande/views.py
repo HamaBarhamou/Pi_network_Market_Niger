@@ -18,6 +18,15 @@ def order_create(request):
     order.save()
     request.session['order_id'] = order.id
     
+    # Créer les OrderItem pour chaque CartItem dans le panier
+    for cart_item in cart.cartitem_set.all():
+        item = OrderItem(
+                order=order,
+                article=cart_item.article,
+                qte=cart_item.qte,
+                )
+        item.save()
+
     return redirect('commande:order_confirmation')
 
 
@@ -34,6 +43,9 @@ def order_confirmation(request):
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     items = OrderItem.objects.filter(order=order)
+    
+    print("items:",items )
+        
     if not items:
         context = {'order': order, 'message': 'There are no items in this order.'}
     else:
@@ -65,10 +77,8 @@ def order_confirm(request, order_id):
             order.status = 'confirmed'
             order.save()
             # Vide le panier 
-            #Cart.objects.filter(user=request.user).delete()
-            cart_items = CartItem.objects.filter(cart__user=request.user)
-            for cart_item in cart_items:
-                cart_item.delete()
+            cart = Cart.objects.get(user=request.user)
+            cart.clear_cart()
 
             return redirect('commande:order_detail', order_id=order.id)
     else:
