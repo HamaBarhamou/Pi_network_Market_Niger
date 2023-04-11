@@ -35,6 +35,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th scope="col">Shop</th>
                             <th scope="col">Produit</th>
                             <th scope="col">Quantité</th>
                             <th scope="col">Prix</th>
@@ -44,6 +45,7 @@
                     <tbody>
                         {% for item in order.orderitem_set.all %}
                             <tr>
+                                <td>{{ item.article.category.shop.name }}</td>
                                 <td>{{ item.article.name }}</td>
                                 <td>{{ item.qte }}</td>
                                 <td>{{ item.article.price }}</td>
@@ -53,7 +55,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="3" class="text-right"><strong>Total :</strong></td>
+                            <td colspan="4" class="text-right"><strong>Total :</strong></td>
                             <td>{{ order.total_amount }}</td>
                         </tr>
                     </tfoot>

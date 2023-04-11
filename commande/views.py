@@ -46,7 +46,6 @@ def order_confirmation(request):
 def order_detail(request, order_id):
     #order = get_object_or_404(Order, id=order_id, user=request.user)
     order = get_object_or_404(Order, id=order_id)
-    print("order id: ", order)
     items = OrderItem.objects.filter(order=order)
         
     if not items:
@@ -105,7 +104,8 @@ def order_confirm(request, order_id):
 
 @login_required
 def order_ship(request, order_id):
-    order = get_object_or_404(Order, id=order_id, user=request.user)
+    #order = get_object_or_404(Order, id=order_id, user=request.user)
+    order = get_object_or_404(Order, id=order_id)
     if order.status != 'confirmed':
         return redirect('commande:order_detail', order_id=order.id)
     if request.method == 'POST':
