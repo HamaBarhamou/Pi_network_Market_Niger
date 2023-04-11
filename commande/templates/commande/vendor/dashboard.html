@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <h1>Commandes reçues</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Date</th>
+                <th>Client</th>
+                <th>Article</th>
+                <th>Quantité</th>
+                <th>Prix</th>
+                <th>Commande</th>
+            </tr>
+        </thead>
+        <tbody> 
+            {% for orderitem in orderitems %}
+            <tr>
+                <td>
+                    {% if orderitem.article.image %}
+                        <img src="{{ orderitem.article.image.url }}" alt="{{ orderitem.article.name }}" style="max-height: 50px;">
+                    {% else %}
+                        <img src="{% static 'images/default-store.jpg' %}" alt="Image par défaut" style="max-height: 50px;">
+                    {% endif %}
+                </td>
+                <td>{{ orderitem.order.created_at|date:"d-m-Y H:i" }}</td>
+                <td>{{ orderitem.order.cart.user.username }}</td>
+                <td>{{ orderitem.article.name }}</td>
+                <td>{{ orderitem.qte }}</td>
+                <td>{{ orderitem.article.price }} €</td>
+                <td><a href="{% url 'commande:order_detail' orderitem.order.id %}">Voir la commande</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">Aucune commande reçue.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

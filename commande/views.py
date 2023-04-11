@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 from panier.models import Cart, CartItem
+from shop.models import Category, Article
+from commande.models import Order
 from .models import Order, OrderItem
 from .forms import OrderForm, PaymentForm
 
@@ -41,7 +44,9 @@ def order_confirmation(request):
 
 @login_required
 def order_detail(request, order_id):
-    order = get_object_or_404(Order, id=order_id, user=request.user)
+    #order = get_object_or_404(Order, id=order_id, user=request.user)
+    order = get_object_or_404(Order, id=order_id)
+    print("order id: ", order)
     items = OrderItem.objects.filter(order=order)
         
     if not items:
@@ -132,3 +137,16 @@ def order_tracking(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     context = {'order': order}
     return render(request, 'order_tracking.html', context)
+
+
+@user_passes_test(lambda user: user.is_authenticated and user.fonction == 2)
+def dashboard(request):
+    vendeur = request.user
+    orderitem=OrderItem.objects.filter(article__category__shop__user=vendeur, order__status='confirmed')
+    print(orderitem)
+    orders = Order.objects.filter(status='confirmed')
+    context = {
+        'orderitems': orderitem,
+    }
+    return render(request, 'commande/vendor/dashboard.html', context)
+ 
