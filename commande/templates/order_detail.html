@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% load cart_tags %}
 
 {% block content %}
@@ -36,11 +36,20 @@
     <div class="row">
         <div class="col-md-12">
             <h3>Articles de la commande</h3>
+            {% if user.fonction == 2 %} 
+                Contact du client:
+                <a href="https://wa.me/{{ article.category.shop.user.phone_number }}"> 
+                    {{ order.user.phone_number }}
+                    <img src="{% static 'shop/images/icones_wathsapp.jpg' %}" alt="WhatsApp" style="width: 60px; height: 60px;">
+                </a>
+            {% endif %}
+
             {% if order.orderitem_set.exists %}
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">Shop</th>
+                            {% if user.fonction == 3 %} <th scope="col">Contact du vendeur</th> {% endif %}
                             <th scope="col">Produit</th>
                             <th scope="col">Quantité</th>
                             <th scope="col">Prix</th>
@@ -51,6 +60,15 @@
                         {% for item in order.orderitem_set.all %}
                             <tr>
                                 <td>{{ item.article.category.shop.name }}</td>
+                                {% if user.fonction == 3 %} 
+                                    <td>
+                                        <a href="https://wa.me/{{ item.article.category.shop.user.phone_number }}"> 
+                                            {{ item.article.category.shop.user.phone_number }}
+                                            <img src="{% static 'shop/images/icones_wathsapp.jpg' %}" alt="WhatsApp" style="width: 60px; height: 60px;">
+                                        </a>
+                                    </td>
+                                    
+                                {% endif %}
                                 <td>{{ item.article.name }}</td>
                                 <td>{{ item.qte }}</td>
                                 <td>{{ item.article.price }}</td>
@@ -60,7 +78,12 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="4" class="text-right"><strong>Total :</strong></td>
+                            {% if user.fonction == 2 %} 
+                                <td colspan="4" class="text-right"><strong>Total :</strong></td>
+                            {% else %}
+                                <td colspan="5" class="text-right"><strong>Total :</strong></td>
+                            {% endif %}
+                            
                             <td>{{ order.total_amount }}</td>
                         </tr>
                     </tfoot>

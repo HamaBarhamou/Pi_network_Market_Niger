@@ -14,7 +14,8 @@ class CustumerUser(UserAdmin):
                     'username',
                     'first_name',
                     'last_name',
-                    'fonction'
+                    'fonction',
+                    'phone_number'
                     ]
     add_fieldsets = UserAdmin.add_fieldsets + (
         (None,
@@ -23,6 +24,7 @@ class CustumerUser(UserAdmin):
                         'first_name',
                         'last_name',
                         'fonction',
+                        'phone_number'
                         'avatar'
                         )
              }
