@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+from datetime import datetime
 from panier.models import Cart, CartItem
 from shop.models import Category, Article
 from commande.models import Order
@@ -17,7 +18,7 @@ def order_create(request):
     
     cart = Cart.objects.get(id=cart['cart_id'])
     total_amount = sum(item.article.price * item.qte for item in cart.cartitem_set.all())
-    order = Order(user=request.user, cart=cart, total_amount=total_amount)
+    order = Order(user=request.user, cart=cart, total_amount=total_amount, created_at=datetime.now())
     order.save()
     request.session['order_id'] = order.id
     
@@ -75,7 +76,7 @@ def order_confirm(request, order_id):
     if order.status != 'pending':
         return redirect('commande:order_detail', order_id=order.id)
     if request.method == 'POST':
-        form = OrderForm(request.POST, instance=order)
+        form = OrderForm(request.POST, instance=order, user=request.user)
         payment_form = PaymentForm(request.POST)  # Ajout du formulaire de mode de paiement
         if form.is_valid() and payment_form.is_valid():
             form.save()
@@ -96,7 +97,7 @@ def order_confirm(request, order_id):
         else:
             messages.error(request, 'Il y a des erreurs dans votre formulaire.')
     else:
-        form = OrderForm(instance=order)
+        form = OrderForm(instance=order, user=request.user)
         payment_form = PaymentForm()  # Création d'une nouvelle instance du formulaire de mode de paiement
     context = {'order': order, 'form': form, 'payment_form': payment_form}  # Ajout du formulaire de mode de paiement dans le contexte
     return render(request, 'order_confirm.html', context)

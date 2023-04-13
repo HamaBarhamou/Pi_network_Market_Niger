@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -47,7 +48,7 @@ def vendor_categories(request):
     categories = Category.objects.filter(shop=shop)
     return render(request, 'vendor/categories.html', {'categories': categories})
 
-@login_required
+@user_passes_test(lambda user: user.is_authenticated and user.fonction == 2)
 def create_shop(request):
     if request.method == 'POST':
         form = ShopForm(request.POST, request.FILES)
@@ -61,7 +62,7 @@ def create_shop(request):
         form = ShopForm()
     return render(request, 'vendor/create_shop.html', {'form': form})
 
-@login_required
+@user_passes_test(lambda user: user.is_authenticated and user.fonction == 2)
 def update_shop(request, shop_id):
     shop = get_object_or_404(Shop, pk=shop_id)
     if request.method == 'POST':
@@ -74,14 +75,14 @@ def update_shop(request, shop_id):
         form = ShopForm(instance=shop)
     return render(request, 'vendor/update_shop.html', {'form': form, 'shop': shop})
 
-@login_required
+@user_passes_test(lambda user: user.is_authenticated and user.fonction == 2)
 def delete_shop(request, shop_id):
     shop = get_object_or_404(Shop, pk=shop_id)
     shop.delete()
     messages.success(request, 'Shop deleted successfully.')
     return redirect('shop:vendor_dashboard')
 
-@login_required
+@user_passes_test(lambda user: user.is_authenticated and user.fonction == 2)
 def create_category(request):
     shop = get_object_or_404(Shop, user=request.user)
     if request.method == 'POST':
@@ -96,7 +97,7 @@ def create_category(request):
         form = CategoryForm()
     return render(request, 'vendor/create_category.html', {'form': form})
 
-@login_required
+@user_passes_test(lambda user: user.is_authenticated and user.fonction == 2)
 def update_category(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
     if request.method == 'POST':
@@ -115,14 +116,14 @@ def category_detail(request, category_id):
     context = {'category': category, 'articles': articles}
     return render(request, 'category_detail.html', context)
 
-@login_required
+@user_passes_test(lambda user: user.is_authenticated and user.fonction == 2)
 def delete_category(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
     category.delete()
     messages.success(request, 'Category deleted successfully.')
     return redirect('shop:vendor_dashboard')
 
-@login_required
+@user_passes_test(lambda user: user.is_authenticated and user.fonction == 2)
 def create_article(request):
     shop = get_object_or_404(Shop, user=request.user)
     if request.method == 'POST':
@@ -143,7 +144,7 @@ def create_article(request):
 
 
 
-@login_required
+@user_passes_test(lambda user: user.is_authenticated and user.fonction == 2)
 def update_article(request, article_id):
     shop = get_object_or_404(Shop, user=request.user)
     article = get_object_or_404(Article, pk=article_id, category__shop=shop)
@@ -167,7 +168,7 @@ def article_detail(request, article_id):
     context = {'article': article}
     return render(request, 'article_detail.html', context)
 
-@login_required
+@user_passes_test(lambda user: user.is_authenticated and user.fonction == 2)
 def delete_article(request, article_id):
     shop = get_object_or_404(Shop, user=request.user)
     article = get_object_or_404(Article, pk=article_id, category__shop=shop)

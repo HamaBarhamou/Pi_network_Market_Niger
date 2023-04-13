@@ -12,6 +12,7 @@ class User(AbstractUser):
 
     fonction = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES, null=True, default=3)
     avatar = models.ImageField(verbose_name='photo de profile', upload_to='avatar')
+    phone_number = models.CharField(verbose_name='Numéro de téléphone', max_length=15)
 
     def __str__(self):
         fonction = ""
