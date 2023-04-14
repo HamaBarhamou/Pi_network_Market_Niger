@@ -1,10 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponse
 from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
+import uuid
 from .models import Shop, Category, Article
 from .forms import ShopForm, CategoryForm, ArticleForm
 from django import forms
@@ -165,6 +167,27 @@ def update_article(request, article_id):
 
 def article_detail(request, article_id):
     article = get_object_or_404(Article, pk=article_id)
+
+    # Retrieve the user's ID or generate a random one
+    user_id = request.COOKIES.get('user_id')
+    if not user_id:
+        user_id = str(uuid.uuid4())
+        response = HttpResponse()
+        response.set_cookie('user_id', user_id)
+
+    # Retrieve the user's views or initialize them to an empty dictionary
+    user_views = request.session.get('user_views', {})
+    article_views = user_views.get(user_id, {})
+    article_view_count = article_views.get(str(article.id), 0)
+
+    # Increment the view count for the article
+    if request.user != article.vendeur and user_id != str(article.vendeur.id) and article_view_count == 0:
+        article.views_count += 1
+        article.save()
+        article_views[str(article.id)] = 1
+        user_views[user_id] = article_views
+        request.session['user_views'] = user_views
+
     context = {'article': article}
     return render(request, 'article_detail.html', context)
 
