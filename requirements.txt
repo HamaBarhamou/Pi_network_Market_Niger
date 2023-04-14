@@ -8,3 +8,6 @@ soupsieve==2.3.2.post1
 sqlparse==0.4.3
 faker
 django_extensions
+django-phonenumber-field
+phonenumbers
+Babel

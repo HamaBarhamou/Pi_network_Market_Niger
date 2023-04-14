@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
+from phonenumber_field.formfields import PhoneNumberField
+from phonenumber_field.widgets import PhoneNumberPrefixWidget
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -9,12 +11,14 @@ class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
     USER_TYPE_CHOICES = (
-        (2, 'Vendor'),
-        (3, 'Customer'),
+        (2, 'Vendeur'),
+        (3, 'Client'),
     )
 
     fonction = forms.ChoiceField(choices=USER_TYPE_CHOICES, required=True)
-    phone_number = forms.CharField(max_length=15, required=True)
+    #phone_number = forms.CharField(max_length=15, required=True)
+    #phone_number = PhoneNumberField(required=True)
+    phone_number = PhoneNumberField(widget=PhoneNumberPrefixWidget(initial='NE'))
 
     class Meta:
         model = User

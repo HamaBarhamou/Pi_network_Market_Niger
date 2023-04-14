@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     "bootstrap5",
     'widget_tweaks',
     'django_extensions',
+    'phonenumbers',
+    'phonenumber_field',
     'user.apps.UserConfig',
     'shop.apps.ShopConfig',
     'panier.apps.PanierConfig',
