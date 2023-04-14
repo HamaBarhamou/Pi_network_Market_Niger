@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'panier.apps.PanierConfig',
     'commande.apps.CommandeConfig',
     'commande.templatetags.cart_tags',
+    'publicite.apps.PubliciteConfig',
 ]
 
 MIDDLEWARE = [
